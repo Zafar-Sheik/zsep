@@ -1,0 +1,4 @@
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+export default function AdminLogin(){const r=useRouter();const [error,setError]=useState("");async function submit(e:React.FormEvent<HTMLFormElement>){e.preventDefault();const password=new FormData(e.currentTarget).get("password");const res=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password})});if(res.ok)r.push("/admin");else setError("Invalid password.")}return <section className="admin-login"><form onSubmit={submit}><p className="eyebrow">ZSEP CMS</p><h1>Admin sign in</h1><label>Password<input type="password" name="password" required autoFocus/></label><button className="button">Sign in</button>{error&&<p className="form-error">{error}</p>}</form></section>}

@@ -1,0 +1,3 @@
+import type { MetadataRoute } from "next";
+import { prisma } from "@/lib/prisma";
+export default async function sitemap():Promise<MetadataRoute.Sitemap>{const base=process.env.NEXT_PUBLIC_SITE_URL||"https://zsep.co.za";const staticRoutes=["","/about","/services","/work","/blog","/contact"].map(route=>({url:`${base}${route}`,lastModified:new Date(),changeFrequency:"monthly" as const,priority:route===""?1:.8}));const posts=await prisma.post.findMany({where:{published:true},select:{slug:true,updatedAt:true}}).catch(()=>[]);return [...staticRoutes,...posts.map(p=>({url:`${base}/blog/${p.slug}`,lastModified:p.updatedAt,changeFrequency:"monthly" as const,priority:.7}))]}

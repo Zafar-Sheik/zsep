@@ -1,0 +1,6 @@
+import { NextResponse } from "next/server";
+import { isAdmin } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+const slugify=(s:string)=>s.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+export async function PUT(req:Request,{params}:{params:Promise<{id:string}>}){if(!await isAdmin())return NextResponse.json({error:"Unauthorized"},{status:401});const {id}=await params;const b=await req.json();const existing=await prisma.post.findUnique({where:{id}});if(!existing)return NextResponse.json({error:"Not found"},{status:404});const post=await prisma.post.update({where:{id},data:{title:b.title,slug:slugify(b.slug||b.title),excerpt:b.excerpt||"",content:b.content||"",coverImage:b.coverImage||null,coverAlt:b.coverAlt||null,seoTitle:b.seoTitle||null,seoDesc:b.seoDesc||null,category:b.category||"Insights",published:!!b.published,featured:!!b.featured,publishedAt:!existing.published&&b.published?new Date():existing.publishedAt}});return NextResponse.json(post)}
+export async function DELETE(_:Request,{params}:{params:Promise<{id:string}>}){if(!await isAdmin())return NextResponse.json({error:"Unauthorized"},{status:401});const {id}=await params;await prisma.post.delete({where:{id}});return NextResponse.json({ok:true})}

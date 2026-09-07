@@ -1,0 +1,7 @@
+import Link from "next/link";
+import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { verticals } from "@/lib/content";
+
+export const metadata = { title: "Services", description: "Integrated marketing, promotions, software development, database solutions and CCTV installation from ZS Elite Partners." };
+
+export default function Services() { return <><section className="page-hero section-dark"><div className="shell narrow"><p className="eyebrow">Our suite of business solutions</p><h1>Everything you need to <em>build, connect and grow.</em></h1><p>Four specialist verticals. One strategic view of the business.</p></div></section>{verticals.map((v, idx)=><section className={`service-section section ${idx%2 ? "section-soft" : ""}`} id={v.slug} key={v.slug}><div className="shell"><div className="service-head"><div><span className="service-num">{v.number}</span><p className="eyebrow">{v.eyebrow}</p><h2>{v.title}</h2><p className="lead">{v.summary}</p></div><div className="service-visual"><span>{v.number}</span></div></div><div className="service-body"><div><h3>Capabilities</h3><div className="capabilities">{v.services.map(x=><div key={x}><CheckCircle2 size={17}/>{x}</div>)}</div></div><div><h3>Result-driven process</h3><ol className="service-process">{v.process.map((x,i)=><li key={x}><span>{String(i+1).padStart(2,"0")}</span>{x}</li>)}</ol></div></div><Link href="/contact" className="button">Discuss this solution <ArrowUpRight size={18}/></Link></div></section>)}</> }

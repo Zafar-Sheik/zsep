@@ -1,0 +1,41 @@
+{
+  "name": "zsep-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "6.16.1",
+    "framer-motion": "12.23.12",
+    "lucide-react": "0.542.0",
+    "motion-dom": "12.23.12",
+    "motion-utils": "12.23.6",
+    "next": "16.0.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.3.1",
+    "@types/react": "19.1.12",
+    "@types/react-dom": "19.1.9",
+    "baseline-browser-mapping": "^2.11.21",
+    "eslint": "9.35.0",
+    "eslint-config-next": "16.0.0",
+    "prisma": "6.16.1",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2"
+  },
+  "overrides": {
+    "motion-dom": "12.23.12"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}

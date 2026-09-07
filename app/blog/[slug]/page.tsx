@@ -1,0 +1,5 @@
+import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+export const revalidate=60;
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const p=await prisma.post.findUnique({where:{slug}}).catch(()=>null);return p?{title:p.seoTitle||p.title,description:p.seoDesc||p.excerpt}:{title:"Article"}}
+export default async function PostPage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const p=await prisma.post.findFirst({where:{slug,published:true}}).catch(()=>null);if(!p)notFound();return <article><section className="article-hero section-dark"><div className="shell article-shell"><p className="eyebrow">{p.category}</p><h1>{p.title}</h1><p>{p.excerpt}</p>{p.coverImage&&<div className="article-image" style={{backgroundImage:`url(${p.coverImage})`}} role="img" aria-label={p.coverAlt||p.title}/>}</div></section><div className="shell article-body">{p.content.split(/\n\n+/).map((para,i)=>para.startsWith("## ")?<h2 key={i}>{para.slice(3)}</h2>:para.startsWith("### ")?<h3 key={i}>{para.slice(4)}</h3>:<p key={i}>{para}</p>)}</div></article>}

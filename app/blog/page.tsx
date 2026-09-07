@@ -1,0 +1,5 @@
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+export const metadata = { title: "Insights", description: "Business growth, marketing, promotions, software and operational insights from ZS Elite Partners." };
+export const revalidate = 60;
+export default async function Blog(){const posts=await prisma.post.findMany({where:{published:true},orderBy:{publishedAt:"desc"}}).catch(()=>[]);return <><section className="page-hero section-dark"><div className="shell narrow"><p className="eyebrow">ZSEP Insights</p><h1>Better decisions begin with <em>better context.</em></h1><p>Practical thinking across growth, customer experience, technology and operations.</p></div></section><section className="section shell">{posts.length?<div className="posts-grid">{posts.map(p=><Link className="post-card" href={`/blog/${p.slug}`} key={p.id}><div className="post-image" style={p.coverImage?{backgroundImage:`url(${p.coverImage})`}:undefined}/><span>{p.category}</span><h2>{p.title}</h2><p>{p.excerpt}</p></Link>)}</div>:<div className="empty-insights"><h2>Insights are coming soon.</h2><p>The CMS is ready for your first article.</p></div>}</section></>}
